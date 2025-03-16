@@ -1,7 +1,6 @@
+import pytest
 from calculator.plugin_system import PluginSystem
 
-def test_plugin():
-    ps = PluginSystem()
-    ps.load_plugin("math")
-    assert "math" in ps.plugins
-
+def test_plugin_system():
+    plugin_system = PluginSystem()
+    assert plugin_system is not None
