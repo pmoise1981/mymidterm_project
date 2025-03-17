@@ -1,30 +1,42 @@
-name: Python CI
+name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
+
+      - name: Ensure venv is available
+        run: python -m ensurepip --upgrade
+
       - name: Install dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
+          python -m ensurepip --upgrade
           pip install --upgrade pip
           pip install -r requirements.txt
-          echo "Dependencies installed successfully"
-      - name: Check Python version
+
+      - name: Run tests with coverage
         run: |
           source venv/bin/activate
-          python --version
-          pip --version
-      - name: Run tests
-        run: |
-          source venv/bin/activate
-          pytest --cov=calculator
-          echo "Tests executed successfully"""
+          pytest --cov=mymidterm_project --cov-report=xml
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
