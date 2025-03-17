@@ -19,9 +19,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Ensure venv is available
-        run: python -m ensurepip --upgrade
-
       - name: Install dependencies
         run: |
           python -m venv venv
@@ -29,6 +26,12 @@ jobs:
           python -m ensurepip --upgrade
           pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Verify pip installation
+        run: |
+          source venv/bin/activate
+          which pip
+          pip --version
 
       - name: Run tests with coverage
         run: |
@@ -39,4 +42,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage.xml
-          fail_ci_if_error: true
+          fail_ci_if_error: truee
