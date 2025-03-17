@@ -27,4 +27,4 @@ jobs:
         run: |
           source venv/bin/activate
           pytest --cov=calculator
-          echo "Tests executed successfully""
+          echo "Tests executed successfully"""
