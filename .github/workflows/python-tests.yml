@@ -1,33 +1,37 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main  # You can change this to match your default branch
+  pull_request:
+    branches:
+      - main  # You can change this to match your default branch
+
 jobs:
-  setup_venv:
+  test:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Check out the code
+      uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'  # You can adjust this to your Python version
+    
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        . venv/bin/activate
+        pip install -r requirements.txt
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.12
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$(pwd)/calculator" >> $GITHUB_ENV  # Ensures Python can find the calculator module
 
-      - name: Create virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          python --version
-          pip --version
-
-      - name: Install dependencies
-        run: |
-          source venv/bin/activate
-          pip install -r requirements.txt
-
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$(pwd)/calculator" >> $GITHUB_ENV  # Set the Python path to calculator
-
-      - name: Run tests
-        run: |
-          source venv/bin/activate
-          pytest
+    - name: Run tests
+      run: |
+        . venv/bin/activate
+        pytest --maxfail=1 --disable-warnings -q
 
