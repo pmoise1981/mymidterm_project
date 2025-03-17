@@ -1,13 +1,14 @@
-import importlib
+import logging_setup
 
-class PluginSystem:
-    def __init__(self):
-        self.plugins = {}
+def example_plugin_function():
+    logger = logging_setup.setup_logging()
+    logger.info("Plugin system initialized.")
+    logger.warning("This is a warning from the plugin system.")
+    logger.error("This is an error from the plugin system.")
 
-    def load_plugin(self, plugin_name):
-        module = importlib.import_module(plugin_name)
-        self.plugins[plugin_name] = module
+def main():
+    example_plugin_function()  # Call the function inside main()
 
-    def get_plugin(self, plugin_name):
-        return self.plugins.get(plugin_name, None)
+if __name__ == "__main__":
+    main()  # Ensure main() is executed when running the script
 
