@@ -15,12 +15,16 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          python -m ensurepip
           pip install --upgrade pip
           pip install -r requirements.txt
           echo "Dependencies installed successfully"
+      - name: Check Python version
+        run: |
+          source venv/bin/activate
+          python --version
+          pip --version
       - name: Run tests
         run: |
           source venv/bin/activate
           pytest --cov=calculator
-          echo "Tests executed successfully"
+          echo "Tests executed successfully""
