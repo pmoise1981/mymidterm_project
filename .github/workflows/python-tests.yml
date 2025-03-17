@@ -21,16 +21,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Create virtual environment
+      - name: Install dependencies
         run: |
           python -m venv venv
+          echo "VIRTUAL_ENV=$PWD/venv" >> $GITHUB_ENV
+          echo "$PWD/venv/bin" >> $GITHUB_PATH
           source venv/bin/activate
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
         shell: bash
-
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
       - name: Run tests with pytest
         run: |
