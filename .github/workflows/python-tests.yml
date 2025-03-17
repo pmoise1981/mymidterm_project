@@ -1,79 +1,33 @@
-name: Python Virtual Environment Setup
-
-on:
-  push:
-    branches:
-      - main  # Trigger workflow on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on PRs to the main branch
-
 jobs:
   setup_venv:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner for your CI environment
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Checkout your repository
+        uses: actions/checkout@v2
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v2
         with:
-          python-version: 3.12  # Use the correct Python version for your project
+          python-version: 3.12
 
       - name: Create virtual environment
         run: |
-          python -m venv venv  # Create virtual environment
-          source venv/bin/activate  # Activate the virtual environment
-          python --version  # Verify Python version
-          pip --version  # Verify pip version
+          python -m venv venv
+          source venv/bin/activate
+          python --version
+          pip --version
 
       - name: Install dependencies
         run: |
-          source venv/bin/activate  # Activate virtual environment
-          pip install -r requirements.txt  # Install dependencies (if you have a requirements.txt file)
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$(pwd)/calculator" >> $GITHUB_ENV  # Set the Python path to calculator
 
       - name: Run tests
         run: |
-          source venv/bin/activate  # Activate virtual environment
-          pytest  # Run your tests (ensure pytest is installed)
-name: Python Virtual Environment Setup
-
-on:
-  push:
-    branches:
-      - main  # Trigger workflow on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on PRs to the main branch
-
-jobs:
-  setup_venv:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner for your CI environment
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2  # Checkout your repository
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.12  # Use the correct Python version for your project
-
-      - name: Create virtual environment
-        run: |
-          python -m venv venv  # Create virtual environment
-          source venv/bin/activate  # Activate the virtual environment
-          python --version  # Verify Python version
-          pip --version  # Verify pip version
-
-      - name: Install dependencies
-        run: |
-          source venv/bin/activate  # Activate virtual environment
-          pip install -r requirements.txt  # Install dependencies (if you have a requirements.txt file)
-
-      - name: Run tests
-        run: |
-          source venv/bin/activate  # Activate virtual environment
-          pytest  # Run your tests (ensure pytest is installed)
+          source venv/bin/activate
+          pytest
 
