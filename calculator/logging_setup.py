@@ -1,3 +1,6 @@
+# Remove this line
+# from calculator.logging_setup import setup_logging
+
 import logging
 
 def setup_logging():
@@ -15,7 +18,6 @@ def setup_logging():
 
     return logger
 
-# If you want to run the script directly (for example, testing):
 if __name__ == "__main__":
     logger = setup_logging()
     logger.info("Logging setup complete")

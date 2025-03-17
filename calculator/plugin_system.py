@@ -1,14 +1,15 @@
-import logging_setup
+#import logging_setup
+from .logging_setup import setup_logging 
 
 def example_plugin_function():
-    logger = logging_setup.setup_logging()
+    logger = setup_logging()  # ✅ Direct function call
     logger.info("Plugin system initialized.")
     logger.warning("This is a warning from the plugin system.")
     logger.error("This is an error from the plugin system.")
 
 def main():
-    example_plugin_function()  # Call the function inside main()
+    example_plugin_function()
 
 if __name__ == "__main__":
-    main()  # Ensure main() is executed when running the script
+    main()
 
