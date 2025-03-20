@@ -44,14 +44,14 @@ class Calculator:
             raise ValueError(f"Error during division: {e}")
 
     def _log_history(self, operation, result):
+        # Create a new row of data and add it to the history
         success_entry = pd.DataFrame([[operation, result]], columns=['operation', 'result'])
-        success_entry = success_entry.loc[:, success_entry.notna().any(axis=0)]
+        success_entry = success_entry.loc[:, success_entry.notna().any(axis=0)]  # Remove empty columns
         self.history = pd.concat([self.history, success_entry], ignore_index=True)
 
     def get_history(self):
         return self.history
 
-    # Updated evaluate method to raise the error without wrapping in ValueError
     def evaluate(self, expression):
         try:
             # Basic operator mapping for safe evaluation
@@ -62,7 +62,7 @@ class Calculator:
                 '/': operator.truediv
             }
 
-            # Split expression into operator and operands (very basic parser)
+            # Split expression into operator and operands (basic parser)
             for op, func in allowed_operators.items():
                 if op in expression:
                     operands = expression.split(op)
@@ -80,8 +80,33 @@ class Calculator:
 
         except ZeroDivisionError as e:
             self._log_history('evaluation_error', str(e))
-            raise e  # Raising the ZeroDivisionError directly without wrapping it in ValueError
+            raise e  # Raise ZeroDivisionError directly without wrapping in ValueError
         except Exception as e:
             self._log_history('evaluation_error', str(e))
             raise ValueError(f"Error during evaluation: {e}")
+
+
+def main():
+    calc = Calculator()
+    print("Welcome to the Python Calculator!")
+    while True:
+        user_input = input("Enter an expression (or type 'exit' to quit): ")
+        
+        if user_input.lower() == 'exit':
+            print("Exiting calculator. Goodbye!")
+            break
+
+        try:
+            result = calc.evaluate(user_input)
+            print(f"Result: {result}")
+        except Exception as e:
+            print(f"Error: {e}")
+        
+        # Optional: Print the history
+        print("\nCalculator History:")
+        print(calc.get_history())
+
+
+if __name__ == "__main__":
+    main()
 
